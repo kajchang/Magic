@@ -1,9 +1,10 @@
+from multiprocessing import Pool
 import requests
 from bs4 import BeautifulSoup
 import random
 
 
-def steam_id_formula(z, v=0x0110000100000000, y=1):
+def steamIdFormula(z, v=0x0110000100000000, y=1):
     """Formula for converting Steam ID to Steam Community ID
     From https://developer.valvesoftware.com/wiki/SteamID
     Args:
@@ -14,32 +15,41 @@ def steam_id_formula(z, v=0x0110000100000000, y=1):
     return z * 2 + v + y
 
 
-def analyzeSteamAccounts(count=100):
-    """Checks specified amount of steam accounts for degrees from St4ck
-    Args:
-        count (int, optional) : number of steam accounts to check, defaults to 100
-    """
+def analyzeOne(_):
+    while True:
+        account = BeautifulSoup(requests.get('https://steamcommunity.com/profiles/{}'.format(
+            steamIdFormula(random.randint(1, 99999999)))).text, 'html5lib')
 
-    # Using variable instead of range because of unregistered/ private account ids
-    accounts_checked = 0
-    account_data = []
-
-    while accounts_checked < count:
-        accounts_to_st4ck = 0
-
-        account = BeautifulSoup(requests.get(
-            'https://steamcommunity.com/profiles/{}'.format(steam_id_formula(random.randint(1, 99999999)))).text, 'html5lib')
-
-        if not account.find('span', {'class': 'actual_persona_name'}) or account.find('div', {'class': 'profile_private_info'}) or not account.find_all('a', {'class': 'friendBlockLinkOverlay'}):
+        if not account.find(class_='actual_persona_name') or account.find(class_='profile_private_info') or not account.find(class_='friendBlockLinkOverlay'):
             # Skip the user if unregistered or account is private 0r has no friends :(
             continue
 
-        while account.find('span', {'class': 'actual_persona_name'}).text != 'St4ck':
+        path = []
+        level = int(account.find(class_='friendPlayerLevelNum').text)
+
+        while account.find(class_='actual_persona_name').text != 'St4ck':
+
+            if not account.find(class_='friendBlockLinkOverlay'):
+                # Stop if we run into a private account
+                path = None
+                break
+
             account = BeautifulSoup(requests.get(account.find(
-                'a', {'class': 'friendBlockLinkOverlay'})['href']).text, 'html5lib')
-            accounts_to_st4ck += 1
+                class_='friendBlockLinkOverlay')['href']).text, 'html5lib')
 
-        account_data.append(accounts_to_st4ck)
-        accounts_checked += 1
+            if account.find(class_='actual_persona_name').text in path:
+                # Stop if we're looping back to previous accounts
+                path = None
+                break
 
-    return account_data
+            path.append(account.find(class_='actual_persona_name').text)
+
+        if path:
+            return {'degrees': len(path),
+                    'path': path,
+                    'level': level}
+
+
+def analyzeSteamAccounts(processes, count=100):
+    p = Pool(processes)
+    return p.map(analyzeOne, range(count))
