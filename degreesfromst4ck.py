@@ -1,4 +1,3 @@
-from multiprocessing import Pool
 import requests
 from bs4 import BeautifulSoup
 import random
@@ -17,10 +16,8 @@ def steamIdFormula(z, v=0x0110000100000000, y=1):
     return z * 2 + v + y
 
 
-def analyzeOne(_=None):
+def analyzeOne():
     """Analyze one steam account.
-    Args:
-        _ : placeholder for p.map argument.
     Returns:
         Dictionary with:
         deadends - number of accounts found that don't lead St4ck.
@@ -66,6 +63,3 @@ def analyzeOne(_=None):
                     "path": path,
                     "level": level}
 
-
-def analyzeSteamAccounts(processes, count=100):
-    return Pool(processes).map(analyzeOne, range(count))
