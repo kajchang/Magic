@@ -4,8 +4,7 @@ import json
 account_data = json.load(open("st4ck.json"))
 
 labels = 'To St4ck', 'Not To St4ck'
-sizes = [len(account_data), sum([account['deadends']
-                                 for account in account_data])]
+sizes = [len([account for account in account_data if account['toSt4ck']]), len([account for account in account_data if not account['toSt4ck']])]
 colors = ['lightblue', 'red']
 
 plt.pie(sizes, labels=labels, colors=colors,

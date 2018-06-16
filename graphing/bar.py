@@ -3,7 +3,7 @@ import json
 
 account_data = json.load(open("st4ck.json"))
 
-degrees = [account["degrees"] for account in account_data]
+degrees = [account["degrees"] for account in account_data if account['toSt4ck']]
 sorted_degrees = [degrees.count(x) for x in range(max(degrees))]
 
 plt.bar(range(len(sorted_degrees)), sorted_degrees)

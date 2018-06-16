@@ -20,17 +20,15 @@ def analyzeOne():
     """Analyze one steam account.
     Returns:
         Dictionary with:
-        deadends - number of accounts found that don't lead St4ck.
-        degrees - number of accounts to St4ck.
-        path - path of accounts to St4ck.
-        level - level of account analyzed.
+        toSt4ck (bool) - whether the account led to St4ck or not
+        degrees (int) - number of accounts tested
+        path - path of accounts tested
+        level - level of account analyzed
     """
     # Record accounts that deadend (don't lead to St4ck)
-    deadends = 0
-
     while True:
         account = BeautifulSoup(requests.get("https://steamcommunity.com/profiles/{}".format(
-            steamIdFormula(random.randint(1, 99999999)))).text, "html5lib")
+            steamIdFormula(random.randint(1, 99999999)))).text, "html.parser")
 
         if not account.find(class_="actual_persona_name") or account.find(class_="profile_private_info") or not account.find(class_="friendBlockLinkOverlay"):
             # Skip the user if unregistered or account is private or has no friends
@@ -43,23 +41,25 @@ def analyzeOne():
 
             if not account.find(class_="friendBlockLinkOverlay"):
                 # Stop if we run into a private account
-                path = None
-                break
+                return {"toSt4ck": False,
+                        "degrees": len(path),
+                        "path": path,
+                        "level": level}
 
             account = BeautifulSoup(requests.get(account.find(
-                class_="friendBlockLinkOverlay")["href"]).text, "html5lib")
+                class_="friendBlockLinkOverlay")["href"]).text, "html.parser")
 
             if account.find(class_="actual_persona_name").text in path:
                 # Stop if we"re looping back to previous accounts
-                deadends += 1
-                path = None
-                break
+                return {"toSt4ck": False,
+                        "degrees": len(path),
+                        "path": path,
+                        "level": level}
 
             path.append(account.find(class_="actual_persona_name").text)
 
-        if path:
-            return {"deadends": deadends,
-                    "degrees": len(path),
-                    "path": path,
-                    "level": level}
+        return {"toSt4ck": True,
+                "degrees": len(path),
+                "path": path,
+                "level": level}
 
