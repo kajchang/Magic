@@ -25,4 +25,9 @@ Shows the percentage of accounts that led to St4ck and the percentage that didn'
 
 Shows the flow of users to St4ck, it's hard to see in a single image because of the volume of links and nodes. See and explore it on plot.ly [here](https://plot.ly/~kachang/16/the-path-to-st4ck/#/).
 
+```line.png```:
+![line.png](https://github.com/kajchang/degrees-from-st4ck/raw/master/graphing/line.png)
+
+Shows how the level rises as the accounts get closer to St4ck.
+
 I hope this entertained you!

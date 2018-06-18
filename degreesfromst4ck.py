@@ -34,32 +34,25 @@ def analyzeOne():
             # Skip the user if unregistered or account is private or has no friends
             continue
 
-        path = []
+        path = {}
         level = int(account.find(class_="friendPlayerLevelNum").text)
 
         while account.find(class_="actual_persona_name").text != "St4ck":
 
-            if not account.find(class_="friendBlockLinkOverlay"):
-                # Stop if we run into a private account
-                return {"toSt4ck": False,
-                        "degrees": len(path),
-                        "path": path,
-                        "level": level}
-
             account = BeautifulSoup(requests.get(account.find(
                 class_="friendBlockLinkOverlay")["href"]).text, "html.parser")
 
-            if account.find(class_="actual_persona_name").text in path:
-                # Stop if we"re looping back to previous accounts
+            if account.find(class_="actual_persona_name").text in path or not account.find(class_="friendBlockLinkOverlay"):
+                # Stop if we"re looping back to previous accounts or if we run into a private account
                 return {"toSt4ck": False,
                         "degrees": len(path),
                         "path": path,
                         "level": level}
 
-            path.append(account.find(class_="actual_persona_name").text)
+            path[account.find(class_="actual_persona_name").text] = int(
+                account.find(class_="friendPlayerLevelNum").text)
 
         return {"toSt4ck": True,
                 "degrees": len(path),
                 "path": path,
                 "level": level}
-
