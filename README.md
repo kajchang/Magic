@@ -1,14 +1,19 @@
 # st4ck analysis
 
-```degreesfromst4ck.py``` is a basic scraper that gets a random Steam account and then follows the highest-level friend until it reaches the highest level Steam user, St4ck, or runs into a private account or an account it's seen before. 
+Have you ever noticed that if you continuously follow your highest-level steam friend and then their highest-level steam friend and so on, most of the time, you'll find St4ck, the highest level Steam account, at the top of the pile?
 
-To use it, install the requirements with ```pip install -r requirements.txt```.
+```st4ck.py``` gets a random Steam account and follows this method to see if it'll reach St4ck or not.
 
-The script has a basic scraping function that can be run however you want, whether that be in a loop, or with multiprocessing/ threading.
 
-After getting some results, write them to a ```.json``` file, then move it to the graphing folder, install the graphing requirements, and run any of the graphing examples: ```pie.py```, ```bar.py```, and ```sankey.py```. 
+## How to Use
 
-The pie and bar charts use matplotlib, and the sankey chart uses [plot.ly](https://plot.ly/), so you need to set up your API key before generating the sankey chart.
+First, install the required packages with ```pip install -r requirements.txt```.
+
+Next, get some results with ```python3 st4ck.py <# of accounts> <filename for data>```
+
+After getting some results, run any of the graphing examples: ```pie.py```, ```line.py```, ```bar.py```, and ```sankey.py``` like this: ```python3 line.py <filename with the data>```
+
+The pie, bar, and line charts use matplotlib, but the sankey chart uses [plot.ly](https://plot.ly/) so you'll need to set up your API key before generating the sankey chart.
 
 ```bar.py```:
 ![bar.png](https://github.com/kajchang/degrees-from-st4ck/raw/master/graphing/bar.png)
@@ -29,5 +34,3 @@ Shows the flow of users to St4ck, it's hard to see in a single image because of 
 ![line.png](https://github.com/kajchang/degrees-from-st4ck/raw/master/graphing/line.png)
 
 Shows how the level rises as the accounts get closer to St4ck.
-
-I hope this entertained you!
