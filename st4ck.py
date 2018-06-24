@@ -37,6 +37,7 @@ def analyzeOne(filename):
 
         path = {}
         level = int(account.find(class_="friendPlayerLevelNum").text)
+        toSt4ck = True
 
         while account.find(class_="actual_persona_name").text != "St4ck":
 
@@ -45,54 +46,41 @@ def analyzeOne(filename):
 
             if account.find(class_="actual_persona_name").text in path or not account.find(class_="friendBlockLinkOverlay"):
                 # Stop if we"re looping back to previous accounts or if we run into a private account
-                try:
-                    file_data = json.load(open(filename))
-                except FileNotFoundError:
-                    with open(filename, 'w') as file:
-                        file.write(json.dumps([]))
-                        file_data = []
-
-                with open(filename, 'w') as file:
-                    file.write(json.dumps(file_data + [{"toSt4ck": False,
-                                                        "degrees": len(path),
-                                                        "path": path,
-                                                        "level": level}]))
-                return {"toSt4ck": False,
-                        "degrees": len(path),
-                        "path": path,
-                        "level": level}
+                toSt4ck = False
+                break
 
             path[account.find(class_="actual_persona_name").text] = int(
                 account.find(class_="friendPlayerLevelNum").text)
 
         try:
             file_data = json.load(open(filename))
-        except FileNotFoundError:
-            with open(filename, 'w') as file:
-                file.write(json.dumps([]))
+
+        except OSError:
+            with open(filename, "w") as data:
+                data.write(json.dumps([]))
                 file_data = []
 
-        with open(filename, 'w') as file:
-            file.write(json.dumps(file_data + [{"toSt4ck": False,
+        with open(filename, "w") as data:
+            data.write(json.dumps(file_data + [{"toSt4ck": toSt4ck,
                                                 "degrees": len(path),
                                                 "path": path,
                                                 "level": level}]))
 
-        return {"toSt4ck": True,
+        return {"toSt4ck": toSt4ck,
                 "degrees": len(path),
                 "path": path,
                 "level": level}
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     if sys.argv[1:]:
         try:
             for x in range(int(sys.argv[1])):
                 analyzeOne(sys.argv[2] if sys.argv[2].endswith(
-                    '.json') else '{}.json'.format(sys.argv[2]))
+                    ".json") else "{}.json".format(sys.argv[2]))
         except Exception:
             print(
-                'Usage:\npython st4ck.py <# of accounts> <filename for data>')
+                "Usage:\npython st4ck.py <# of accounts> <filename for data>")
     else:
         print(
-            'Usage:\npython st4ck.py <# of accounts> <filename for data>')
+            "Usage:\npython st4ck.py <# of accounts> <filename for data>")
