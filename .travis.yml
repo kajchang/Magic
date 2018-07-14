@@ -1,0 +1,13 @@
+language: python
+
+python:
+  - "3.6"
+
+install:
+  - pip install -r requirements.txt
+
+script:
+  - python3 st4ck.py 1 data.json
+  - python3 bar.py data.json
+  - python3 line.py data.json
+  - python3 pie.py data.json
