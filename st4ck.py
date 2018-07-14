@@ -72,7 +72,7 @@ def analyze(id_=randomFullAccount(), data=None):
 
 if __name__ == "__main__":
     if sys.argv[1:]:
-        if True:
+        try:
             filename = sys.argv[2] if sys.argv[2].endswith(
                 ".json") else "{}.json".format(sys.argv[2])  # add .json if filename doesn't end with .json
             for x in range(int(sys.argv[1])):
@@ -88,7 +88,7 @@ if __name__ == "__main__":
                 with open(filename, "w") as file_:
                     file_.write(json.dumps(file_data + [data]))
 
-        else:
+        except Exception:
             print(
                 "Usage:\npython st4ck.py <# of accounts> <filename for data>")
     else:
