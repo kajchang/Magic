@@ -5,7 +5,7 @@ import sys
 
 def graph_line(data):
     for a in data:
-        plt.plot(range(len(a["path"])), list(a["path"].values()))
+        plt.plot(range(len(a)), list(a.values()))
 
     plt.xlabel('Degrees')
     plt.ylabel('Level')

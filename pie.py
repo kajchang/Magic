@@ -5,8 +5,8 @@ import sys
 
 def graph_pie(data):
     labels = 'To St4ck', 'Not To St4ck'
-    sizes = [len([account for account in data if list(account['path'].keys())[-1] == 'St4ck']),
-             len([account for account in data if not list(account['path'].keys())[-1] == 'St4ck'])]
+    sizes = [len([account for account in data if list(account.keys())[-1] == 'St4ck']),
+             len([account for account in data if not list(account.keys())[-1] == 'St4ck'])]
     colors = ['lightblue', 'red']
 
     plt.pie(sizes, labels=labels, colors=colors,

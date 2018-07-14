@@ -4,8 +4,8 @@ import sys
 
 
 def graph_bar(data):
-    degrees = [len(account['path'])
-               for account in data if list(account['path'].keys())[-1] == 'St4ck']
+    degrees = [len(account)
+               for account in data if list(account.keys())[-1] == 'St4ck']
 
     sorted_degrees = [degrees.count(x) for x in range(max(degrees) + 1)]
 

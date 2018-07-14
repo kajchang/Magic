@@ -5,18 +5,18 @@ import sys
 
 def graph_sankey(data):
     labels = list(
-        set([a for p in data for a in list(p["path"].keys())]))
+        set([a for p in data for a in list(p.keys())]))
 
     links = {}
 
     for p in data:
-        for a in list(p["path"].keys())[:-1]:
-            if (a, list(p["path"].keys())[list(p["path"].keys()).index(a) + 1]) in links:
-                links[(a, list(p["path"].keys())[
-                       list(p["path"].keys()).index(a) + 1])] += 1
+        for a in list(p.keys())[:-1]:
+            if (a, list(p.keys())[list(p.keys()).index(a) + 1]) in links:
+                links[(a, list(p.keys())[
+                       list(p.keys()).index(a) + 1])] += 1
             else:
-                links[(a, list(p["path"].keys())[
-                       list(p["path"].keys()).index(a) + 1])] = 1
+                links[(a, list(p.keys())[
+                       list(p.keys()).index(a) + 1])] = 1
 
     indexed_links = [
         [labels.index(x[0]), labels.index(x[1]), links[x]] for x in links]
