@@ -19,9 +19,10 @@ if __name__ == '__main__':
         try:
             graph_line(json.load(open(sys.argv[1])) if sys.argv[1].endswith(
                 '.json') else json.load(open('{}.json'.format(sys.argv[1])))).show()
-        except Exception:
-            print(
-                'Usage:\npython line.py <filename>')
+        except Exception as e:
+            if not isinstance(e, AttributeError):
+                print(
+                    'Usage:\npython line.py <filename>')
     else:
         print(
             'Usage:\npython line.py <filename>')

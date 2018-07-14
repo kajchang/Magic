@@ -4,12 +4,13 @@ import sys
 
 
 def graph_bar(data):
-    degrees = [account["degrees"]
-               for account in data if account['toSt4ck']]
-    sorted_degrees = [degrees.count(x) for x in range(max(degrees))]
+    degrees = [len(account['path'])
+               for account in data if list(account['path'].keys())[-1] == 'St4ck']
+
+    sorted_degrees = [degrees.count(x) for x in range(max(degrees) + 1)]
 
     plt.bar(range(len(sorted_degrees)), sorted_degrees)
-    plt.xticks(range(len(sorted_degrees)), range(max(degrees)))
+    plt.xticks(range(len(sorted_degrees)), range(max(degrees) + 1))
     plt.title("Degrees of Separation from St4ck")
     plt.xlabel("Degrees")
     plt.ylabel("Accounts")
@@ -21,9 +22,10 @@ if __name__ == '__main__':
         try:
             graph_bar(json.load(open(sys.argv[1])) if sys.argv[1].endswith(
                 '.json') else json.load(open('{}.json'.format(sys.argv[1]))))
-        except Exception:
-            print(
-                'Usage:\npython bar.py <filename>')
+        except Exception as e:
+            if not isinstance(e, AttributeError):
+                print(
+                    'Usage:\npython bar.py <filename>')
     else:
         print(
             'Usage:\npython bar.py <filename>')
