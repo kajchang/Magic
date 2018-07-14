@@ -60,9 +60,6 @@ def analyze(id_=randomFullAccount(), data=None):
         data["path"][account.find(class_="actual_persona_name").text] = int(
             account.find(class_="friendPlayerLevelNum").text)
 
-        print(account.find(
-            class_="friendBlockLinkOverlay")["href"].split('/')[4])
-
         return analyze(account.find(
             class_="friendBlockLinkOverlay")["href"].split('/')[4], data=data)
 
