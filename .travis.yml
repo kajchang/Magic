@@ -7,7 +7,7 @@ install:
   - pip install -r requirements.txt
 
 script:
-  - python3 st4ck.py 1 data.json
-  - python3 bar.py data.json
-  - python3 line.py data.json
-  - python3 pie.py data.json
+  - python3 st4ck.py -f data.json
+  - python3 st4ck.py -pie -f data.json
+  - python3 st4ck.py -line -f data.json
+  - python3 st4ck.py -bar -f data.json
