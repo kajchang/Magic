@@ -9,12 +9,12 @@ Have you ever noticed that if you continuously follow your highest-level steam f
 
 First, clone or download this repository.
 
-Next, install the required packages with ```pip install -r requirements.txt```.
+Next, install the required packages with `$ pip install .`.
 
 To generate some results:
 
 ```bash
-$ python st4ck.py -f data.json -a 5 -v
+$ python3 -m st4ck -f data.json -a 5 -v
 ```
 
 This will generate 5 results, dump the results into ```data.json```, and turn on verbosity. To run without verbosity, just leave out the ```-v```.
@@ -22,7 +22,7 @@ This will generate 5 results, dump the results into ```data.json```, and turn on
 To graph:
 
 ```bash
-$ python st4ck.py -pie -f data.json
+$ python3 -m st4ck -pie -f data.json
 ```
 
 This will read data from data.json and generate a pie chart from it. Other valid graphing options are ```-bar```, ```-line```, and ```-sankey```.

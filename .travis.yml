@@ -4,10 +4,7 @@ python:
   - "3.6"
 
 install:
-  - pip install -r requirements.txt
+  - pip install .
 
 script:
-  - python3 st4ck.py -f data.json
-  - python3 st4ck.py -pie -f data.json
-  - python3 st4ck.py -line -f data.json
-  - python3 st4ck.py -bar -f data.json
+  - pytest
