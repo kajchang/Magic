@@ -7,11 +7,25 @@ Have you ever noticed that if you continuously follow your highest-level steam f
 
 ## How to Use
 
-First, install the required packages with ```pip install -r requirements.txt```.
+First, clone or download this repository.
 
-Next, get some results with ```python3 st4ck.py <# of accounts> <filename for data>```
+Next, install the required packages with ```pip install -r requirements.txt```.
 
-After getting some results, run any of the graphing examples: ```pie.py```, ```line.py```, ```bar.py```, and ```sankey.py``` like this: ```python3 line.py <filename with the data>```
+To generate some results:
+
+```bash
+$ python st4ck.py -f data.json -a 5 -v
+```
+
+This will generate 5 results, dump the results into ```data.json```, and turn on verbosity. To run without verbosity, just leave out the ```-v```.
+
+To graph:
+
+```bash
+$ python st4ck.py -pie -f data.json
+```
+
+This will read data from data.json and generate a pie chart from it. Other valid graphing options are ```-bar```, ```-line```, and ```-sankey```.
 
 The pie, bar, and line charts use matplotlib, but the sankey chart uses [plot.ly](https://plot.ly/) so you'll need to set up your API key before generating the sankey chart.
 
