@@ -1,10 +1,14 @@
-from st4ck.st4ck import analyze, graph_sankey, graph_line, graph_pie, graph_bar
+from st4ck.graphing import graph_sankey, graph_line, graph_pie, graph_bar
+from st4ck.analysis import analyze
 import sys
 import argparse
 import json
 
 
-def main(args=sys.argv[1:]):
+def main(args=None):
+    if args is None:
+        args = sys.argv[1:]
+
     parser = argparse.ArgumentParser()
 
     parser.add_argument('-f', help='file', required=True)
@@ -18,15 +22,15 @@ def main(args=sys.argv[1:]):
 
     args = parser.parse_args(args)
 
-    filename = args.f if args.f.endswith('.json') else '{}.json'.format(args.f)
+    file_name = args.f if args.f.endswith('.json') else '{}.json'.format(args.f)
 
     if not args.sankey and not args.line and not args.pie and not args.bar:
         try:
-            with open(filename) as file_:
-                file_data = json.load(file_) # Try loading data already in file
+            with open(file_name) as file_:
+                file_data = json.load(file_) # Try loading data already in file_
 
         except OSError:
-            with open(filename, "w") as file_:  # Create file if doesn't exist
+            with open(file_name, "w") as file_:  # Create file_ if doesn't exist
                 file_data = []
                 file_.write(json.dumps(file_data))
 
@@ -45,27 +49,23 @@ def main(args=sys.argv[1:]):
                 else:
                     file_data.append(analyze())
 
-        with open(filename, "w") as file_:
+        with open(file_name, "w") as file_:
             file_.write(json.dumps(file_data))
 
     elif args.sankey:
-        with open(filename) as file:
-            graph_sankey(json.load(file))
+        with open(file_name) as file_:
+            graph_sankey(json.load(file_))
 
-    elif args.line:
-        import matplotlib.pyplot as plt
-        with open(filename) as file:
-            graph_line(json.load(file))
+    elif args.line:        
+        with open(file_name) as file_:
+            graph_line(json.load(file_))
 
-    elif args.pie:
-        import matplotlib.pyplot as plt
-        with open(filename) as file:
-            graph_pie(json.load(file))
-
+    elif args.pie:        
+        with open(file_name) as file_:
+            graph_pie(json.load(file_))
     elif args.bar:
-        import matplotlib.pyplot as plt
-        with open(filename) as file:
-            graph_bar(json.load(file))
+        with open(file_name) as file_:
+            graph_bar(json.load(file_))
 
 
 if __name__ == '__main__':
