@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 
 import random
+import sys
 
 import plotly.plotly as py
 
@@ -16,11 +17,35 @@ def steamIdFormula(z, v=0x0110000100000000, y=1):
     Returns:
         Steam Community ID (int)
     """
-    return z * 2 + v + y
+    return 2 * z + v + y
+
+
+def isValidId(id_, v=0x0110000100000000, y=1):
+    """Reverse Steam ID formula taking full community ID and decoding the account ID.
+    Args:
+        id_ (int) : steam community id
+        v (int, optional) : account type, defaults to user: 0x0110000100000000
+        y (int, optional) : account universe, defaults to public: 1
+
+    Returns:
+        True: ID is valid.
+        False: ID is invalid.
+    """
+    z = (id_ - y - v) / 2
+    
+    if z >= 1 and z <= 999999999:
+        return True
+
+    else:
+        return False
 
 
 def randomFullAccount():
-    id_ = steamIdFormula(random.randint(1, 99999999))  # Generate a random id.
+    """Generate a random account that exists and is not private.
+    Returns:
+        Valid Steam Community ID (int)
+    """
+    id_ = steamIdFormula(random.randint(1, 999999999))  # Generate a random id.
     account = BeautifulSoup(requests.get("https://steamcommunity.com/profiles/{}".format(
         id_)).text, "html.parser")
 
@@ -36,18 +61,17 @@ def randomFullAccount():
 def analyze(id_=randomFullAccount, data=None, verbose=False):
     """Analyze one steam account.
     Returns:
-        Dictionary with:
-            path (dict) - path of accounts tested and their levels
-            level (int) - level of account analyzed
+        Dictionary mapping account names to their levels.
     """
-    if callable(id_):
+    if callable(id_): # Call ID generator function if function is passed as id_ param.
         id_ = id_()
 
     id_ = str(id_)  # Convert to string so we can check with .isdigit()
 
-    if id_.isdigit():  # Check if it's a raw id and using according url format
+    if id_.isdigit() and isValidId(int(id_)):  # Check if it's a raw id and using according url format
         account = BeautifulSoup(requests.get("https://steamcommunity.com/profiles/{}".format(
             id_)).text, "html.parser")
+
     else:  # Use url format for aliases
         account = BeautifulSoup(requests.get("https://steamcommunity.com/id/{}".format(
             id_)).text, "html.parser")
@@ -55,6 +79,9 @@ def analyze(id_=randomFullAccount, data=None, verbose=False):
     name = account.find(class_="actual_persona_name").text
 
     if not data:  # Check if it needs to build on path or start new one.
+        if verbose:
+            print('Scraping {}'.format(name.translate(dict.fromkeys(range(0x10000, sys.maxunicode + 1), 0xfffd))))
+
         data = {name: int(
             account.find(class_="friendPlayerLevelNum").text)}
 
@@ -73,7 +100,7 @@ def analyze(id_=randomFullAccount, data=None, verbose=False):
             account.find(class_="friendPlayerLevelNum").text)
 
         if verbose:
-            print('Scraping {}'.format(name))
+            print('Scraping {}'.format(name.translate(dict.fromkeys(range(0x10000, sys.maxunicode + 1), 0xfffd))))
 
         return analyze(account.find(
             class_="friendBlockLinkOverlay")["href"].split('/')[4], data=data, verbose=verbose)  # Call analyze on the next account
@@ -176,6 +203,3 @@ def graph_sankey(data):
 
     fig = dict(data=[data], layout=layout)
     py.iplot(fig, validate=False)
-
-if __name__ == '__main__':
-    import matplotlib.pyplot as plt

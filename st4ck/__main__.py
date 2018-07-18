@@ -12,7 +12,8 @@ def main(args=sys.argv[1:]):
     parser.add_argument('-line', help='graph a line chart', required=False, action='store_true')
     parser.add_argument('-pie', help='graph a pie chart', required=False, action='store_true')
     parser.add_argument('-bar', help='graph a bar chart', required=False, action='store_true')
-    parser.add_argument('-a', help='number of accounts', type=int, default=1)
+    parser.add_argument('-n', help='number of accounts', type=int, default=1)
+    parser.add_argument('-id', help='name/id of account to start on', required=False)
     parser.add_argument('-v', help='verbosity', required=False, action='store_true')
 
     args = parser.parse_args(args)
@@ -21,22 +22,31 @@ def main(args=sys.argv[1:]):
 
     if not args.sankey and not args.line and not args.pie and not args.bar:
         try:
-            file_data = json.load(open(filename)) # Try loading data already in file
+            with open(filename) as file_:
+                file_data = json.load(file_) # Try loading data already in file
 
         except OSError:
             with open(filename, "w") as file_:  # Create file if doesn't exist
                 file_data = []
                 file_.write(json.dumps(file_data))
 
-        for x in range(args.a):
+        if args.id:
             if args.v:
-                file_data.append(analyze(verbose=True))
+                file_data.append(analyze(id_=args.id, verbose=True))
 
             else:
-                file_data.append(analyze())
+                file_data.append(analyze(id_=args.id))
 
-            with open(filename, "w") as file_:
-                file_.write(json.dumps(file_data))
+        else:
+            for x in range(args.n):
+                if args.v:
+                    file_data.append(analyze(verbose=True))
+
+                else:
+                    file_data.append(analyze())
+
+        with open(filename, "w") as file_:
+            file_.write(json.dumps(file_data))
 
     elif args.sankey:
         with open(filename) as file:

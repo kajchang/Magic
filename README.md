@@ -11,13 +11,25 @@ First, clone or download this repository.
 
 Next, install the required packages with `$ pip install .`.
 
-To generate some results:
+To generate some results from random account:
 
 ```bash
-$ python3 -m st4ck -f data.json -a 5 -v
+$ python3 -m st4ck -f data.json -n 5 -v
 ```
 
 This will generate 5 results, dump the results into ```data.json```, and turn on verbosity. To run without verbosity, just leave out the ```-v```.
+
+To get results from a preset account:
+
+```bash
+$ python3 -m st4ck -f data.json -id 76561198045813683
+```
+
+or 
+
+```bash
+$ python3 -m st4ck -f data.json -id kachangred
+```
 
 To graph:
 
