@@ -50,7 +50,7 @@ class Test_St4ck(unittest.TestCase):
         with open('data.json') as file:
             data1 = json.load(file)
 
-        self.assertDictEqual(data[0], data[1])
+        self.assertDictEqual(data[0], data1[0])
 
         os.remove('data.json')
 
