@@ -45,7 +45,12 @@ class Test_St4ck(unittest.TestCase):
         with open('data.json') as file:
             data = json.load(file)
 
-        self.assertDictEqual(data[0], {'kachang': 12, '夜勤病栋': 51, '~Coral•Sea~': 321, 'Dark Zone': 1325, 'St4ck': 2802})
+        main('-f data1.json -id 76561198045813683'.split())
+
+        with open('data.json') as file:
+            data1 = json.load(file)
+
+        self.assertDictEqual(data[0], data[1])
 
         os.remove('data.json')
 
