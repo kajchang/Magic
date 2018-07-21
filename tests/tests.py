@@ -1,5 +1,8 @@
+import sys
+sys.path.append("..")
+
 import unittest
-from st4ck.__main__ import main
+from run import main
 import json
 import io
 from contextlib import redirect_stdout
