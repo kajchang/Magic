@@ -27,7 +27,8 @@ class Test_St4ck(unittest.TestCase):
 
         output = output[:-1]
 
-        self.assertTrue(all(line.startswith('Scraping') for line in output[:-1]))
+        self.assertTrue(all(line.startswith('Scraping')
+                            for line in output[:-1]))
         self.assertTrue(output[-1].startswith('Finished at'))
 
         os.remove('data.json')
@@ -42,21 +43,22 @@ class Test_St4ck(unittest.TestCase):
 
         os.remove('data.json')
 
-    def test_targeted(self):
-        main('-f data.json -id kachangred'.split())
+    #def test_targeted(self):
+    #    main('-f data.json -id kachangred'.split())
+    #
+    #    with open('data.json') as file_:
+    #        data = json.load(file_)
+    #
+    #    main('-f data1.json -id 76561198045813683'.split())
+    #
+    #    with open('data.json') as file_:
+    #        data1 = json.load(file_)
+    #
+    #    self.assertDictEqual(data[0], data1[0])
+    #
+    #    os.remove('data.json')
+    #    os.remove('data1.json')
 
-        with open('data.json') as file_:
-            data = json.load(file_)
-
-        main('-f data1.json -id 76561198045813683'.split())
-
-        with open('data.json') as file_:
-            data1 = json.load(file_)
-
-        self.assertDictEqual(data[0], data1[0])
-
-        os.remove('data.json')
-        os.remove('data1.json')
 
 if __name__ == '__main__':
     unittest.main()

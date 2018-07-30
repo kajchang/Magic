@@ -1,3 +1,6 @@
+# Doesn't work anymore with the new version of Steam because profile's friends are hidden by default.
+
+
 # st4ck analysis
 
 Have you ever noticed that if you continuously follow your highest-level steam friend and then their highest-level steam friend and so on, most of the time, you'll find St4ck, the highest level Steam account, at the top of the pile?
