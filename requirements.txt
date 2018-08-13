@@ -1,4 +1,4 @@
 requests==2.19.1
 bs4==0.0.1
 plotly==3.1.0
-matplotlib==2.2.2
+matplotlib==2.2.3
