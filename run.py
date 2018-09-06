@@ -11,7 +11,7 @@ def main(args=None):
 
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('-o', help='output file', required=True)
+    parser.add_argument('-f', help='file', required=True)
     parser.add_argument('-sankey', help='graph a sankey chart',
                         required=False, action='store_true')
     parser.add_argument('-line', help='graph a line chart',
@@ -28,8 +28,8 @@ def main(args=None):
 
     args = parser.parse_args(args)
 
-    file_name = args.o if args.o.endswith(
-        '.json') else '{}.json'.format(args.o)
+    file_name = args.f if args.f.endswith(
+        '.json') else '{}.json'.format(args.f)
 
     if not args.sankey and not args.line and not args.pie and not args.bar:
         try:

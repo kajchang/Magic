@@ -11,7 +11,7 @@ import os
 
 class Test_Magic(unittest.TestCase):
     def test_scraping(self):
-        main('-o data.json'.split())
+        main('-f data.json'.split())
 
         with open('data.json') as file_:
             data = json.load(file_)
@@ -22,7 +22,7 @@ class Test_Magic(unittest.TestCase):
 
     def test_verbose(self):
         with io.StringIO() as buf, redirect_stdout(buf):
-            main('-o data.json -v'.split())
+            main('-f data.json -v'.split())
             output = buf.getvalue().split('\n')
 
         output = output[:-1]
@@ -34,7 +34,7 @@ class Test_Magic(unittest.TestCase):
         os.remove('data.json')
 
     def test_multiple(self):
-        main('-o data.json -n 5'.split())
+        main('-f data.json -n 5'.split())
 
         with open('data.json') as file_:
             data = json.load(file_)
@@ -44,12 +44,12 @@ class Test_Magic(unittest.TestCase):
         os.remove('data.json')
 
     def test_targeted(self):
-        main('-o data.json -id kachangred'.split())
+        main('-f data.json -id kachangred'.split())
 
         with open('data.json') as file_:
             data = json.load(file_)
 
-        main('-o data1.json -id 76561198045813683'.split())
+        main('-f data1.json -id 76561198045813683'.split())
 
         with open('data.json') as file_:
             data1 = json.load(file_)

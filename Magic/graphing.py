@@ -1,5 +1,6 @@
 import plotly.plotly as py
 
+
 def graph_line(data):
     import matplotlib.pyplot as plt
     for a in data:
@@ -7,16 +8,16 @@ def graph_line(data):
 
     plt.xlabel('Degrees')
     plt.ylabel('Level')
-    plt.title('Level over Degrees from St4ck')
+    plt.title('Level over Degrees from Magic')
 
     plt.show()
 
 
 def graph_pie(data):
     import matplotlib.pyplot as plt
-    labels = 'To St4ck', 'Not To St4ck'
-    sizes = [len([account for account in data if list(account.keys())[-1] == 'St4ck']),
-             len([account for account in data if not list(account.keys())[-1] == 'St4ck'])]
+    labels = 'To Magic', 'Not To Magic'
+    sizes = [len([account for account in data if list(account.keys())[-1] == 'Magic']),
+             len([account for account in data if not list(account.keys())[-1] == 'Magic'])]
     colors = ['lightblue', 'red']
 
     plt.pie(sizes, labels=labels, colors=colors,
@@ -29,15 +30,15 @@ def graph_pie(data):
 def graph_bar(data):
     import matplotlib.pyplot as plt
     degrees = [len(account)
-               for account in data if list(account.keys())[-1] == 'St4ck']
+               for account in data if list(account.keys())[-1] == 'Magic']
 
     sorted_degrees = [degrees.count(x) for x in range(max(degrees) + 1)]
 
     plt.bar(range(len(sorted_degrees)), sorted_degrees)
     plt.xticks(range(len(sorted_degrees)), range(max(degrees) + 1))
-    plt.title("Degrees of Separation from St4ck")
-    plt.xlabel("Degrees")
-    plt.ylabel("Accounts")
+    plt.title('Degrees of Separation from Magic')
+    plt.xlabel('Degrees')
+    plt.ylabel('Accounts')
     plt.show()
 
 
@@ -64,16 +65,16 @@ def graph_sankey(data):
     value = [x[2] for x in indexed_links]
 
     data = dict(
-        type="sankey",
+        type='sankey',
         node=dict(
             pad=15,
             thickness=20,
             line=dict(
-                color="black",
+                color='black',
                 width=0.5
             ),
             label=labels,
-            color=["blue" for x in range(len(labels))]
+            color=['blue' for x in range(len(labels))]
         ),
         link=dict(
             source=source,
@@ -83,7 +84,7 @@ def graph_sankey(data):
     )
 
     layout = dict(
-        title="The Path to St4ck",
+        title='The Path to Magic',
         font=dict(
             size=10
         )
