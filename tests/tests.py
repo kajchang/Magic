@@ -9,9 +9,9 @@ from contextlib import redirect_stdout
 import os
 
 
-class Test_St4ck(unittest.TestCase):
+class Test_Magic(unittest.TestCase):
     def test_scraping(self):
-        main('-f data.json'.split())
+        main('-o data.json'.split())
 
         with open('data.json') as file_:
             data = json.load(file_)
@@ -22,7 +22,7 @@ class Test_St4ck(unittest.TestCase):
 
     def test_verbose(self):
         with io.StringIO() as buf, redirect_stdout(buf):
-            main('-f data.json -v'.split())
+            main('-o data.json -v'.split())
             output = buf.getvalue().split('\n')
 
         output = output[:-1]
@@ -34,7 +34,7 @@ class Test_St4ck(unittest.TestCase):
         os.remove('data.json')
 
     def test_multiple(self):
-        main('-f data.json -n 5'.split())
+        main('-o data.json -n 5'.split())
 
         with open('data.json') as file_:
             data = json.load(file_)
@@ -43,21 +43,21 @@ class Test_St4ck(unittest.TestCase):
 
         os.remove('data.json')
 
-    #def test_targeted(self):
-    #    main('-f data.json -id kachangred'.split())
-    #
-    #    with open('data.json') as file_:
-    #        data = json.load(file_)
-    #
-    #    main('-f data1.json -id 76561198045813683'.split())
-    #
-    #    with open('data.json') as file_:
-    #        data1 = json.load(file_)
-    #
-    #    self.assertDictEqual(data[0], data1[0])
-    #
-    #    os.remove('data.json')
-    #    os.remove('data1.json')
+    def test_targeted(self):
+        main('-o data.json -id kachangred'.split())
+
+        with open('data.json') as file_:
+            data = json.load(file_)
+
+        main('-o data1.json -id 76561198045813683'.split())
+
+        with open('data.json') as file_:
+            data1 = json.load(file_)
+
+        self.assertDictEqual(data[0], data1[0])
+
+        os.remove('data.json')
+        os.remove('data1.json')
 
 
 if __name__ == '__main__':

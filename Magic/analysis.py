@@ -30,7 +30,7 @@ def isValidId(id_, v=0x0110000100000000, y=1):
         False: ID is invalid.
     """
     z = (id_ - y - v) / 2
-    
+
     return z >= 1 and z <= 999999999
 
 
@@ -57,7 +57,7 @@ def analyze(id_=randomFullAccount, data=None, verbose=False):
     Returns:
         Dictionary mapping account names to their levels.
     """
-    if callable(id_): # Call ID generator function if function is passed as id_ param.
+    if callable(id_):  # Call ID generator function if function is passed as id_ param.
         id_ = id_()
 
     id_ = str(id_)  # Convert to string so we can check with .isdigit()
@@ -74,7 +74,8 @@ def analyze(id_=randomFullAccount, data=None, verbose=False):
 
     if not data:  # Check if it needs to build on path or start new one.
         if verbose:
-            print('Scraping {}'.format(name.translate(dict.fromkeys(range(0x10000, sys.maxunicode + 1), 0xfffd))))
+            print('Scraping {}'.format(name.translate(
+                dict.fromkeys(range(0x10000, sys.maxunicode + 1), 0xfffd))))
 
         data = {name: int(
             account.find(class_="friendPlayerLevelNum").text)}
@@ -82,11 +83,11 @@ def analyze(id_=randomFullAccount, data=None, verbose=False):
         return analyze(account.find(
             class_="friendBlockLinkOverlay")["href"].split('/')[4], data=data, verbose=verbose)  # Call analyze on the next account
 
-    if name != "St4ck":  # Check if the account name is St4ck
+    if name != 'Magic':  # Check if the account name is St4ck
         if name in data or not account.find(class_="friendBlockLinkOverlay"):
             # Stop if we"re looping back to previous accounts or if we run into a private account.
             if verbose:
-                print('Finished at {}'.format(name))
+                print('Finished at {}'.format(list(data)[-1]))
 
             return data
 
@@ -94,14 +95,15 @@ def analyze(id_=randomFullAccount, data=None, verbose=False):
             account.find(class_="friendPlayerLevelNum").text)
 
         if verbose:
-            print('Scraping {}'.format(name.translate(dict.fromkeys(range(0x10000, sys.maxunicode + 1), 0xfffd))))
+            print('Scraping {}'.format(name.translate(
+                dict.fromkeys(range(0x10000, sys.maxunicode + 1), 0xfffd))))
 
         return analyze(account.find(
             class_="friendBlockLinkOverlay")["href"].split('/')[4], data=data, verbose=verbose)  # Call analyze on the next account
 
     else:
         if verbose:
-            print('Finished at St4ck')
+            print('Finished at Magic')
 
         data[name] = int(
             account.find(class_="friendPlayerLevelNum").text)
